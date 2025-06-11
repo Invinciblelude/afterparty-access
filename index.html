@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AfterPartyAccess - Exclusive after-parties and nightlife in Dallas. RSVP or book VIP tables for the ultimate experience!">
+  <meta name="keywords" content="Dallas nightlife, after-parties, VIP events, club nights, Dallas events">
+  <meta name="author" content="AfterPartyAccess">
+  <title>AfterPartyAccess - Elite Dallas Nightlife</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/instafeed.js/2.0.0/instafeed.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://widget.tawk.to/script.js" data-tawk-site-id="YOUR_TAWKTO_SITE_ID"></script>
+  <style>
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .pulse { animation: pulse 2s infinite; }
+    .lazy { opacity: 0; transition: opacity 0.5s; }
+    .lazy.loaded { opacity: 1; }
+    #calendar { max-width: 900px; margin: 0 auto; }
+  </style>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_TRACKING_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'YOUR_GA_TRACKING_ID');
+  </script>
+</head>
+<body class="bg-black text-white font-sans">
+  <!-- Navigation Bar -->
+  <nav class="bg-gray-900 p-4 fixed w-full top-0 z-20 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="#" class="text-3xl font-extrabold text-purple-500">AfterPartyAccess</a>
+      <ul class="flex space-x-6 text-lg">
+        <li><a href="#home" class="hover:text-purple-500 transition">Home</a></li>
+        <li><a href="#events" class="hover:text-purple-500 transition">Events</a></li>
+        <li><a href="#calendar" class="hover:text-purple-500 transition">Calendar</a></li>
+        <li><a href="#vip" class="hover:text-purple-500 transition">VIP Booking</a></li>
+        <li><a href="#contact" class="hover:text-purple-500 transition">Contact</a></li>
+        <li><a href="https://www.instagram.com/afterpartyaccess" target="_blank" class="hover:text-purple-500 transition">Instagram</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section with Video Background -->
+  <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+    <video autoplay muted loop class="absolute w-full h-full object-cover">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-nightclub-party-vibes-432-large.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="relative text-center z-10">
+      <h1 class="text-6xl font-extrabold mb-4 pulse">AfterPartyAccess</h1>
+      <p class="text-2xl mb-6">Dallas' Premier After-Party Destination</p>
+      <div class="space-x-4">
+        <a href="#rsvp" class="bg-purple-600 hover:bg-purple-800 text-white font-bold py-3 px-6 rounded-lg pulse">RSVP Now</a>
+        <a href="#vip" class="bg-transparent border-2 border-purple-500 hover:bg-purple-500 text-white font-bold py-3 px-6 rounded-lg">Book VIP</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events Section with Countdown -->
+  <section id="events" class="py-20 container mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-12">Upcoming After-Parties</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <img data-src="https://via.placeholder.com/400x200?text=Saturday+Night" alt="Saturday Night" class="w-full h-48 object-cover rounded mb-4 lazy">
+        <h3 class="text-2xl font-bold">Saturday Night Fever</h3>
+        <p class="text-gray-400">June 14, 2025 - Free entry before 11 PM with RSVP</p>
+        <p id="countdown-1" class="text-purple-400 mt-2"></p>
+        <a href="#rsvp" class="text-purple-500 hover:underline">RSVP Now</a>
+      </div>
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <img data-src="https://via.placeholder.com/400x200?text=Concert+After-Party" alt="Concert After-Party" class="w-full h-48 object-cover rounded mb-4 lazy">
+        <h3 class="text-2xl font-bold">Concert After-Party</h3>
+        <p class="text-gray-400">June 20, 2025 - VIP Tables & Hookah Available</p>
+        <p id="countdown-2" class="text-purple-400 mt-2"></p>
+        <a href="#rsvp" class="text-purple-500 hover:underline">RSVP Now</a>
+      </div>
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <img data-src="https://via.placeholder.com/400x200?text=Neon+Nights" alt="Neon Nights" class="w-full h-48 object-cover rounded mb-4 lazy">
+        <h3 class="text-2xl font-bold">Neon Nights</h3>
+        <p class="text-gray-400">June 27, 2025 - Special Guest DJ</p>
+        <p id="countdown-3" class="text-purple-400 mt-2"></p>
+        <a href="#rsvp" class="text-purple-500 hover:underline">RSVP Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Event Calendar -->
+  <section id="calendar" class="py-20 bg-gray-900">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-12">Event Calendar</h2>
+      <div id="calendar"></div>
+    </div>
+  </section>
+
+  <!-- RSVP Form Section -->
+  <section id="rsvp" class="py-20 container mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-12">Secure Your Spot</h2>
+    <form id="rsvp-form" class="max-w-lg mx-auto space-y-6">
+      <input type="text" id="name" placeholder="Full Name" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-purple-500">
+      <input type="email" id="email" placeholder="Email Address" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-purple-500">
+      <select id="event" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-purple-500">
+        <option value="Saturday Night Fever">Saturday Night Fever - June 14</option>
+        <option value="Concert After-Party">Concert After-Party - June 20</option>
+        <option value="Neon Nights">Neon Nights - June 27</option>
+      </select>
+      <button type="submit" class="bg-purple-600 hover:bg-purple-800 text-white font-bold py-3 px-6 rounded-lg w-full">Submit RSVP</button>
+    </form>
+    <p id="form-message" class="mt-6 text-lg text-center"></p>
+  </section>
+
+  <!-- VIP Booking Section with Stripe -->
+  <section id="vip" class="py-20 bg-gray-900">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-12">Book a VIP Table</h2>
+      <form id="vip-form" class="max-w-lg mx-auto space-y-6">
+        <input type="text" id="vip-name" placeholder="Full Name" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-purple-500">
+        <input type="email" id="vip-email" placeholder="Email Address" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-purple-500">
+        <input type="tel" id="vip-phone" placeholder="Phone Number" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-purple-500">
+        <select id="vip-event" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-purple-500">
+          <option value="Saturday Night Fever">Saturday Night Fever - June 14 ($500)</option>
+          <option value="Concert After-Party">Concert After-Party - June 20 ($750)</option>
+          <option value="Neon Nights">Neon Nights - June 27 ($600)</option>
+        </select>
+        <div id="card-element" class="w-full p-3 rounded bg-gray-800 border border-gray-700"></div>
+        <button type="submit" id="vip-submit" class="bg-purple-600 hover:bg-purple-800 text-white font-bold py-3 px-6 rounded-lg w-full">Pay & Book</button>
+      </form>
+      <p id="vip-message" class="mt-6 text-lg text-center"></p>
+    </div>
+  </section>
+
+  <!-- Newsletter Signup -->
+  <section id="newsletter" class="py-20 container mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-12">Stay in the Loop</h2>
+    <form id="newsletter-form" class="max-w-lg mx-auto space-y-6">
+      <input type="email" id="newsletter-email" placeholder="Enter your email" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-purple-500">
+      <button type="submit" class="bg-purple-600 hover:bg-purple-800 text-white font-bold py-3 px-6 rounded-lg w-full">Subscribe</button>
+    </form>
+    <p id="newsletter-message" class="mt-6 text-lg text-center"></p>
+  </section>
+
+  <!-- Instagram Feed Section -->
+  <section id="instafeed" class="py-20 bg-gray-900">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-12">Follow the Vibe</h2>
+      <div id="instafeed-container" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="py-20 container mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-12">What Partygoers Say</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <p class="text-gray-400">"The best after-parties in Dallas! Always a blast."</p>
+        <p class="mt-4 font-bold">- Sarah K.</p>
+      </div>
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <p class="text-gray-400">"VIP tables made our night epic. Highly recommend!"</p>
+        <p class="mt-4 font-bold">- Mike D.</p>
+      </div>
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <p class="text-gray-400">"Seamless RSVP and insane energy every time."</p>
+        <p class="mt-4 font-bold">- Jenna L.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20 bg-gray-900 text-center">
+    <h2 class="text-4xl font-bold mb-12">Get in Touch</h2>
+    <p>Email: <a href="mailto:info@afterpartyaccess.com" class="text-purple-500 hover:underline">info@afterpartyaccess.com</a></p>
+    <p>Phone: <a href="tel:+1234567890" class="text-purple-500 hover:underline">+1 (234) 567-890</a></p>
+    <p>Follow us on <a href="https://www.instagram.com/afterpartyaccess" target="_blank" class="text-purple-500 hover:underline">Instagram</a></p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black p-6 text-center">
+    <p>© 2025 AfterPartyAccess. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Supabase Setup
+    const supabase = Supabase.createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_ANON_KEY');
+
+    // Stripe Setup
+    const stripe = Stripe('YOUR_STRIPE_PUBLISHABLE_KEY');
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+
+    // RSVP Form Submission
+    document.getElementById('rsvp-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const event = document.getElementById('event').value;
+      const message = document.getElementById('form-message');
+
+      try {
+        const { data, error } = await supabase
+          .from('rsvps')
+          .insert([{ name, email, event }]);
+        if (error) throw error;
+        message.textContent = 'RSVP confirmed! Check your email.';
+        message.classList.add('text-green-500');
+        document.getElementById('rsvp-form').reset();
+      } catch (error) {
+        message.textContent = 'Error submitting RSVP. Try again.';
+        message.classList.add('text-red-500');
+      }
+    });
+
+    // VIP Form Submission with Stripe
+    document.getElementById('vip-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('vip-name').value;
+      const email = document.getElementById('vip-email').value;
+      const phone = document.getElementById('vip-phone').value;
+      const event = document.getElementById('vip-event').value;
+      const message = document.getElementById('vip-message');
+      const priceMap = {
+        'Saturday Night Fever': 50000, // $500 in cents
+        'Concert After-Party': 75000, // $750
+        'Neon Nights': 60000 // $600
+      };
+
+      try {
+        // Create Stripe Payment Intent
+        const response = await fetch('YOUR_SERVER_ENDPOINT/create-payment-intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: priceMap[event], currency: 'usd' })
+        });
+        const { clientSecret } = await response.json();
+
+        // Confirm Card Payment
+        const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: { card: cardElement, billing_details: { name, email, phone } }
+        });
+
+        if (error) throw error;
+
+        // Save to Supabase
+        const { data, supabaseError } = await supabase
+          .from('vip_bookings')
+          .insert([{ name, email, phone, event, payment_id: paymentIntent.id }]);
+        if (supabaseError) throw supabaseError;
+
+        message.textContent = 'VIP table booked! Confirmation sent.';
+        message.classList.add('text-green-500');
+        document.getElementById('vip-form').reset();
+      } catch (error) {
+        message.textContent = error.message || 'Error booking table. Try again.';
+        message.classList.add('text-red-500');
+      }
+    });
+
+    // Newsletter Signup
+    document.getElementById('newsletter-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('newsletter-email').value;
+      const message = document.getElementById('newsletter-message');
+
+      try {
+        const { data, error } = await supabase
+          .from('newsletter')
+          .insert([{ email }]);
+        if (error) throw error;
+        message.textContent = 'Subscribed! Stay tuned for updates.';
+        message.classList.add('text-green-500');
+        document.getElementById('newsletter-form').reset();
+      } catch (error) {
+        message.textContent = 'Error subscribing. Try again.';
+        message.classList.add('text-red-500');
+      }
+    });
+
+    // Countdown Timers
+    function startCountdown(elementId, date) {
+      const countdownElement = document.getElementById(elementId);
+      const endDate = new Date(date).getTime();
+      const updateCountdown = () => {
+        const now = new Date().getTime();
+        const distance = endDate - now;
+        if (distance < 0) {
+          countdownElement.textContent = 'Event Started!';
+          return;
+        }
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        countdownElement.textContent = `${days}d ${hours}h ${minutes}m`;
+      };
+      updateCountdown();
+      setInterval(updateCountdown, 60000);
+    }
+    startCountdown('countdown-1', '2025-06-14T22:00:00');
+    startCountdown('countdown-2', '2025-06-20T22:00:00');
+    startCountdown('countdown-3', '2025-06-27T22:00:00');
+
+    // Lazy Load Images
+    document.querySelectorAll('img[data-src]').forEach(img => {
+      img.src = img.dataset.src;
+      img.classList.add('loaded');
+    });
+
+    // Instagram Feed
+    const feed = new Instafeed({
+      accessToken: 'YOUR_INSTAGRAM_ACCESS_TOKEN',
+      limit: 6,
+      template: '<a href="{{link}}" target="_blank"><img src="{{image}}" class="w-full h-48 object-cover rounded-lg lazy" alt="Instagram post" /></a>',
+      target: 'instafeed-container'
+    });
+    feed.run();
+
+    // FullCalendar
+    document.addEventListener('DOMContentLoaded', function() {
+      const calendarEl = document.getElementById('calendar');
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: [
+          { title: 'Saturday Night Fever', start: '2025-06-14T22:00:00' },
+          { title: 'Concert After-Party', start: '2025-06-20T22:00:00' },
+          { title: 'Neon Nights', start: '2025-06-27T22:00:00' }
+        ],
+        eventClick: function(info) {
+          window.location.href = '#rsvp';
+        }
+      });
+      calendar.render();
+    });
+  </script>
+</body>
+</html>
