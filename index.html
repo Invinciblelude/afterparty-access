@@ -48,7 +48,7 @@
 
   <!-- Background audio (attempt autoplay; fall back to button) -->
   <audio id="bgAudio" src="audio/bg.mp3" loop preload="auto" playsinline></audio>
-  <button id="enableSound" style="display:none" class="fixed bottom-4 right-4 bg-yellow-400 text-black px-4 py-2 rounded font-semibold text-xs shadow hover:opacity-90">Enable sound</button>
+  <button id="enableSound" class="fixed bottom-4 right-4 bg-yellow-400 text-black px-4 py-2 rounded font-semibold text-xs shadow hover:opacity-90">Enable sound</button>
 
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
@@ -68,6 +68,8 @@
     }
     document.addEventListener('DOMContentLoaded', tryAutoplay);
     if (btn) btn.addEventListener('click', tryAutoplay);
+    // First interaction anywhere also tries to start audio (once)
+    document.addEventListener('pointerdown', () => tryAutoplay(), { once: true });
   </script>
 </body>
 </html>
